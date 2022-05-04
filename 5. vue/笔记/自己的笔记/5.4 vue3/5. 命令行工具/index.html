@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="file" id="file1" name="file1" />
+    <input type="file" id="file2" name="file2" />
+
+    <input type="button" value="上传" id="upload" />
+    <input type="button" value="下载" id="download" />
+
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script>
+    $("#download").click(function() {
+      // 打开一个新的窗口
+      window.open("http://localhost:8083/download");
+    });
+    $("#upload").click(function() {
+      //创建一个FormDate
+      var formData = new FormData();
+      //将文件信息追加到其中
+      formData.append("file", $("#file1")[0].files[0]);
+      formData.append("file", $("#file2")[0].files[0]);
+      $.ajax({
+        url: "http://localhost:8083/file_upload",
+        method: "post",
+        //取消帮我们格式化数据，是什么就是什么
+        processData: false,
+        //ajax2.0可以不用设置请求头，但是jq帮我们自动设置了，这样的话需要我们自己取消掉
+        contentType: false,
+        data: formData,
+        success: function(res) {
+          console.log(res);
+        }
+      });
+    });
+  </script>
+</html>
+
